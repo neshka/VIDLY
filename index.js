@@ -33,6 +33,27 @@ app.post('/api/genres', (req, res) => {
 
 });
 
+//delete genre with given ID
+app.delete('/api/genres/:id', (req, res) => {
+    //find genre with given ID
+    const genre = genres.find(c => c.id === parseInt(req.params.id));
+
+    //if genre with given id doesn't exist
+    if (!genre) return res.status(404).send(`The genre with ID: ${req.params.id} doesn't exist`);
+
+    //when genre exist, find its index
+    const index = genres.indexOf(genre);
+
+    //remove item with fiven index number from the genres
+    genres.splice(index, 1);
+
+    //show genre which was removed
+    res.send(genre);
+});
+
+
+
+
 //function to validate if name of the genre is correct 
 function validateGenre(genre) {
     const schema = {
