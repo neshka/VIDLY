@@ -28,7 +28,26 @@ app.post('/api/genres', (req, res) => {
         name: req.body.name
     };
 
+    //add genre to genres
     genres.push(genre);
+
+    //show the genre which was added
+    res.send(genre);
+
+});
+
+//update genre with given ID
+app.put('/api/genres/:id', (req, res) => {
+    //check if there is a genre with given id
+    const genre = genres.find(c => c.id === parseInt(req.params.id));
+    console.log(genre);
+    //if genre with given id doeasn't exist send error message
+    if (!genre) res.status(404).send(`The genre with ID: ${req.params.id} doesn't exist`);
+    
+    const { error } = validateGenre(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    genre.name = req.body.name;
     res.send(genre);
 
 });
@@ -52,16 +71,16 @@ app.delete('/api/genres/:id', (req, res) => {
 });
 
 
-
-
 //function to validate if name of the genre is correct 
 function validateGenre(genre) {
+    //create a schema
     const schema = {
       name: Joi.string().min(3).required()
     };
-  
+    //add validation
     return Joi.validate(genre, schema);
   }
   
+  //add port
   const port = process.env.PORT || 3000;
   app.listen(port, () => console.log(`Listening on port ${port}...`));
