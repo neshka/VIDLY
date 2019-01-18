@@ -40,10 +40,11 @@ app.post('/api/genres', (req, res) => {
 app.put('/api/genres/:id', (req, res) => {
     //check if there is a genre with given id
     const genre = genres.find(c => c.id === parseInt(req.params.id));
-    console.log(genre);
+
     //if genre with given id doeasn't exist send error message
     if (!genre) res.status(404).send(`The genre with ID: ${req.params.id} doesn't exist`);
     
+
     const { error } = validateGenre(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -67,6 +68,13 @@ app.delete('/api/genres/:id', (req, res) => {
     genres.splice(index, 1);
 
     //show genre which was removed
+    res.send(genre);
+});
+
+app.get('/api/genres/:id', (req, res) => {
+    const genre = genres.find(c => c.id === parseInt(req.params.id));
+    if (!genre) return res.status(404).send(`The genre with ID: ${req.params.id} doesn't exist`);
+
     res.send(genre);
 });
 
