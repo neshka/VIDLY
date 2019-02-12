@@ -19,39 +19,32 @@ router.get('/', async (req, res) => {
 });
 
 //creat genre
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     //check if there is correct body //use created vaidation function Joi
     const { error } = validateGenre(req.body);
     //bad request 400
     if (error) return res.status(400).send(error.details[0].message);
 
-    //genre has to have id and name
-    const genre = {
-        id: genres.length + 1,
-        name: req.body.name
-    };
-
-    //add genre to genres
-    genres.push(genre);
-
-    //show the genre which was added
+    //genre has to have id (from DB) and name
+    let genre = new Genre({ name: req.body.name });
+    genre = await genre.save();
     res.send(genre);
-
-});
+    });
 
 //update genre with given ID
-router.put('/:id', (req, res) => {
-    //check if there is a genre with given id
-    const genre = genres.find(c => c.id === parseInt(req.params.id));
+    router.put('/:id', async (req, res) => {
+
+        const { error } = validateGenre(req.body);
+        if (error) return res.status(400).send(error.details[0].message);
+
+        const genre = await Genre.findByIdAndUpdate(req.params.id, {name: req.body.name }, { 
+            new: true
+        });
 
     //if genre with given id doeasn't exist send error message
     if (!genre) res.status(404).send(`The genre with ID: ${req.params.id} doesn't exist`);
     
 
-    const { error } = validateGenre(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
-    genre.name = req.body.name;
     res.send(genre);
 
 });
