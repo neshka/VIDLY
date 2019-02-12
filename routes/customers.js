@@ -4,7 +4,10 @@ const router = express.Router();
 const Joi = require('joi');
 
 const Customer = mongoose.model('Customer', new mongoose.Schema({
-    isGold: Boolean,
+    isGold: { 
+        type: Boolean,
+        default: false 
+    },
     name: {
         type: String,
         required: true,
@@ -12,7 +15,10 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
         maxlength: 50
     },
     phone: {
-        type: Number
+        type: Number,
+        required: true,
+        minlength: 7,
+        maxlength: 7
     }
 }));
 
@@ -26,7 +32,11 @@ router.post('/', async (req, res) => {
     const { error } = validateCustomer(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let customer = new Customer({ name: req.body.name });
+    let customer = new Customer({ 
+        name: req.body.name,
+        phone: req.body.phone,
+        isGold: req.body.isGold 
+    });
     customer = await customer.save();
     res.send(customer);
     });
@@ -36,14 +46,16 @@ router.put('/:id', async (req, res) => {
     const { error } = validateCustomer(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const customer = await Customer.findByIdAndUpdate(req.params.id, {name: req.body.name }, { 
-        new: true
-    });
+    const customer = await Customer.findByIdAndUpdate(req.params.id, 
+        {
+            name: req.body.name,
+            phone: req.body.phone,
+            isGold: req.body.isGold 
+        }, 
 
+        { new: true });
 
     if (!customer) res.status(404).send(`The customer with ID: ${req.params.id} doesn't exist`);
-    
-
     res.send(customer);
 
 });
@@ -67,8 +79,9 @@ router.get('/:id', async (req, res) => {
 
 function validateCustomer(customer) {
     const schema = {
-      isGold: Joi.boolean().required(),
-      name: Joi.string().min(3).required()
+      name: Joi.string().min(5).max(50).required(),
+      phone: Joi.string().min(7).max(7).required(),
+      isGold: Joi.boolean()
     };
 
     return Joi.validate(customer, schema);
