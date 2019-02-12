@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 
-const Genre = new mongoose.model('Genre', new mongoose.Schema({
+const Genre = mongoose.model('Genre', new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -49,26 +49,17 @@ router.post('/', async (req, res) => {
 
 });
 
-//delete genre with given ID
-router.delete('/:id', (req, res) => {
-    //find genre with given ID
-    const genre = genres.find(c => c.id === parseInt(req.params.id));
+router.delete('/:id', async (req, res) => {
+    const genre = await Genre.findByIdAndRemove(req.params.id);
 
-    //if genre with given id doesn't exist
     if (!genre) return res.status(404).send(`The genre with ID: ${req.params.id} doesn't exist`);
 
-    //when genre exist, find its index
-    const index = genres.indexOf(genre);
-
-    //remove item with fiven index number from the genres
-    genres.splice(index, 1);
-
-    //show genre which was removed
     res.send(genre);
 });
 
-router.get('/:id', (req, res) => {
-    const genre = genres.find(c => c.id === parseInt(req.params.id));
+router.get('/:id', async (req, res) => {
+    const genre = await Genre.findById(req.params.id);
+    
     if (!genre) return res.status(404).send(`The genre with ID: ${req.params.id} doesn't exist`);
 
     res.send(genre);
