@@ -1,0 +1,27 @@
+{
+  "name": "VIDLY",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neshka/VIDLY.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neshka/VIDLY/issues"
+  },
+  "homepage": "https://github.com/neshka/VIDLY#readme",
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "express": "^4.16.4",
+    "font-awesome": "^4.7.0",
+    "joi": "^14.3.1",
+    "mongoose": "^5.4.11"
+  }
+}
