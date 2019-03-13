@@ -1,7 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-[Tutorial](https://appdividend.com/2018/11/11/react-crud-example-mern-stack-tutorial/)
-
 ## Available Scripts
 
 In the project directory, you can run:
