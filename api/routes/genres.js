@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const { Genre, validate } = require("../models/genres");
+const { Genre, validate } = require("../models/genre");
 
 //read all genres
 router.get("/", async (req, res) => {
