@@ -4,6 +4,7 @@ const app = express();
 const genres = require("./routes/genres");
 const customers = require("./routes/customers");
 const movies = require("./routes/movies");
+const rentals = require("./routes/rentals");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use("/api/genres", genres);
 app.use("/api/customers", customers);
 app.use("/api/movies", movies);
+app.use("/api/rentals", rentals);
 
 //add port
 const port = process.env.PORT || 4000;
