@@ -22,18 +22,6 @@ router.post("/add", async (req, res) => {
   res.send(genre);
 });
 
-// router.route("/add").post(function(req, res) {
-//   let genre = new Genre({ name: req.body.name });
-//   genre
-//     .save()
-//     .then(genre => {
-//       res.status(200).json({ genre: "genre in added successfully" });
-//     })
-//     .catch(err => {
-//       res.status(400).send("unable to save to database");
-//     });
-// });
-
 //update genre with given ID
 router.put("/:id", async (req, res) => {
   const { error } = validate(req.body);
