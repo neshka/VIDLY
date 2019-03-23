@@ -5,7 +5,7 @@ const router = express.Router();
 const { Genre, validate } = require("../models/genre");
 
 //read all genres
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const genres = await Genre.find().sort("name");
   res.send(genres);
 });
@@ -24,7 +24,7 @@ router.post("/add", auth, async (req, res) => {
 });
 
 //update genre with given ID
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -43,7 +43,7 @@ router.put("/:id", async (req, res) => {
   res.send(genre);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const genre = await Genre.findByIdAndRemove(req.params.id);
 
   if (!genre)
@@ -54,7 +54,7 @@ router.delete("/:id", async (req, res) => {
   res.send(genre);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   const genre = await Genre.findById(req.params.id);
 
   if (!genre)
