@@ -1,3 +1,4 @@
+const auth = require("../middleware/auth");
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
@@ -10,7 +11,7 @@ router.get("/", async (req, res) => {
 });
 
 //creat genre
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   //check if there is correct body //use created vaidation function Joi
   const { error } = validate(req.body);
   //bad request 400
