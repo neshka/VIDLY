@@ -1,3 +1,4 @@
+const error = require("./middleware/error");
 const config = require("config");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -35,6 +36,8 @@ app.use("/api/movies", movies);
 app.use("/api/rentals", rentals);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
+
+app.use(error);
 
 //add port
 const port = process.env.PORT || 4000;
