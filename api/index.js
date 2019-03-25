@@ -1,3 +1,5 @@
+const winston = require("winston");
+require("winston-mongodb");
 const error = require("./middleware/error");
 const config = require("config");
 const mongoose = require("mongoose");
@@ -11,6 +13,9 @@ const users = require("./routes/users");
 const auth = require("./routes/auth");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
+winston.add(winston.transports.File, { filename: "logfile.log" });
+winston.add(winston.transports.MongoDB, { db: "mongodb://localhost/vidly" });
 
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: jwtPrivateKey is not defined.");
